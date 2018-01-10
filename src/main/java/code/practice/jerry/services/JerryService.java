@@ -1,14 +1,20 @@
 package code.practice.jerry.services;
 
+import code.practice.jerry.common.JerryConstants;
 import code.practice.jerry.dtos.JerryCheeseRequest;
 import code.practice.jerry.dtos.JerryCheersResponse;
-import com.sun.javafx.binding.StringFormatter;
-import org.springframework.stereotype.Service;
+import code.practice.jerry.models.Food;
+import org.apache.camel.ProducerTemplate;
 
 import java.util.UUID;
 
-@Service
 public class JerryService {
+
+    private final ProducerTemplate producerTemplate;
+
+    public JerryService(ProducerTemplate producerTemplate) {
+        this.producerTemplate = producerTemplate;
+    }
 
     public JerryCheersResponse cheers(){
         return new JerryCheersResponse("Jerry said cheers :)");
@@ -16,11 +22,17 @@ public class JerryService {
     }
 
     public String replenishFridge(JerryCheeseRequest request){
+
         String id = UUID.randomUUID().toString();
         String name = request.getName();
         String date = request.getDate();
 
-        return "Jerry put a [" + name +"] in the fridge on [" +date+"].";
+        Food food = new Food(id, name, date);
+
+        return producerTemplate.requestBody(JerryConstants.FRIDGE_ROUTE_FROM, food, String.class);
+
+
 
     }
+
 }

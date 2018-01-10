@@ -5,17 +5,17 @@ import code.practice.jerry.dtos.JerryCheeseRequest;
 import code.practice.jerry.services.JerryService;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import static code.practice.jerry.utils.DataFormater.format;
+import static code.practice.jerry.common.DataFormater.format;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
-@Component
-public class JerryRouteBuilder extends RouteBuilder {
+public class JerryRestApiRouteBuilder extends RouteBuilder {
 
-    @Autowired
-    private JerryService jerryService;
+    private final JerryService jerryService;
+
+    public JerryRestApiRouteBuilder(JerryService jerryService) {
+        this.jerryService = jerryService;
+    }
 
     @Override
     public void configure() throws Exception {
@@ -38,16 +38,11 @@ public class JerryRouteBuilder extends RouteBuilder {
                 .end()
                 .endRest()
 
-                .post("/fridge/{name}/{date}")
+                .post("/fridge")
                 .type(JerryCheeseRequest.class)
                 .route()
-                .process(exchange -> {
-                    exchange.getOut().setBody(new JerryCheeseRequest(exchange.getIn().getHeader("name").toString(), exchange.getIn().getHeader("date").toString()));
-                })
-                .bean(jerryService, "replenishFridge")
-                .endRest()
-
-        ;
+                .bean(jerryService, "replenishFridge(${in.body})")
+                .endRest();
 
     }
 

@@ -1,4 +1,4 @@
-package code.practice.jerry.utils;
+package code.practice.jerry.common;
 
 import org.apache.camel.component.jackson.JacksonDataFormat;
 import org.apache.camel.spi.DataFormat;
