@@ -3,17 +3,18 @@ package code.practice.jerry.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
-//@Getter
-//@Setter
 public class JerryCheeseRequest {
 
     private String name;
 
+    private String date;
+
     public JerryCheeseRequest(){
     }
 
-    public JerryCheeseRequest(String name) {
+    public JerryCheeseRequest(String name, String date) {
         this.name = name;
+        this.date = date;
     }
 
     public String getName() {
@@ -22,5 +23,13 @@ public class JerryCheeseRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

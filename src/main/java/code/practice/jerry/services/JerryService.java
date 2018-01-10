@@ -18,8 +18,9 @@ public class JerryService {
     public String replenishFridge(JerryCheeseRequest request){
         String id = UUID.randomUUID().toString();
         String name = request.getName();
+        String date = request.getDate();
 
-        return "Jerry put a [" + name +"] in the fridge.";
+        return "Jerry put a [" + name +"] in the fridge on [" +date+"].";
 
     }
 }

@@ -38,7 +38,12 @@ public class JerryRouteBuilder extends RouteBuilder {
                 .end()
                 .endRest()
 
-                .post("/fridge/{id}").type(JerryCheeseRequest.class).route()
+                .post("/fridge/{name}/{date}")
+                .type(JerryCheeseRequest.class)
+                .route()
+                .process(exchange -> {
+                    exchange.getOut().setBody(new JerryCheeseRequest(exchange.getIn().getHeader("name").toString(), exchange.getIn().getHeader("date").toString()));
+                })
                 .bean(jerryService, "replenishFridge")
                 .endRest()
 
